@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    public enum DestroyType
+    {
+        Destroy = 0,
+        Hide = 1,
+    }
     public int health = 100;
+    public DestroyType destroyType;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +26,17 @@ public class Health : MonoBehaviour
     public void HealthChange(int change)
     {
         health += change;
+        if(health <= 0)
+        {
+            if(destroyType == DestroyType.Destroy)
+            {
+                GameObject.Destroy(gameObject);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
     public int GetHealth()
     {
