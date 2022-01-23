@@ -30,6 +30,10 @@ public class Health : MonoBehaviour
         {
             if(destroyType == DestroyType.Destroy)
             {
+               AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+                if (audioSource != null && audioSource.clip.name == "–°π÷À¿Õˆ") {
+                    audioSource.Play();
+                }
                 GameObject.Destroy(gameObject);
             }
             else

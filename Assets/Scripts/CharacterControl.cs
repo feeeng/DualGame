@@ -18,7 +18,7 @@ public class CharacterControl : MonoBehaviour
     public string verticalKey;
     public string rotationKey;
     public string fireKey;
-
+    AudioSource m_AudioSouce;
     #region Animator
     public Animator playerAnimator;
     #endregion
@@ -34,6 +34,7 @@ public class CharacterControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_AudioSouce = GetComponent<AudioSource>();
         myrig = GetComponent<Rigidbody>();
         GetComponent<Health>().health = DataCenter.instance.PlayerInitHealth;
     }
@@ -77,7 +78,7 @@ public class CharacterControl : MonoBehaviour
             playerAnimator.SetFloat("Speed", 0.0f);
         }
 
-        if (isTriggered)
+        //if (isTriggered)
         {
             bulletRemainTimes -= Time.deltaTime;
             if (bulletRemainTimes <= 0.0f)
@@ -92,6 +93,7 @@ public class CharacterControl : MonoBehaviour
                     bulletInstance.transform.forward = transform.forward;
                 }
                 bulletInstance.GetComponent<Bullet>().which = player;
+                m_AudioSouce.Play();
             }
         }
         float dist = (DataCenter.instance.boss.transform.position - transform.position).magnitude;

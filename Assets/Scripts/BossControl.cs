@@ -18,7 +18,9 @@ public class BossControl : MonoBehaviour
     public float MonsterGenInterval = 5f;
     float MonsterGenRemainTime = 0.0f;
     public float speedReducingTime { get; set; } = 0.0f;
-
+    private AudioSource m_AudioSouce;
+    bool startSound = false;
+    float soundTimer = 0.0f;
     #region Animator
     public Animator bossAminator;
     #endregion
@@ -38,11 +40,23 @@ public class BossControl : MonoBehaviour
     {
         bossrig = GetComponent<Rigidbody>();
         GetComponent<Health>().health = DataCenter.instance.BossInitHealth;
+        m_AudioSouce =GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (startSound)
+        {
+            soundTimer += Time.deltaTime;
+        }
+        if (soundTimer > 0.9f)
+        {
+            soundTimer = 0;
+            startSound = false;
+            m_AudioSouce.Stop();
+        }
+
         var moveEnum = DataCenter.instance.GetWitchMove();
         DataCenter.PlayerEnum targetPlayer = DataCenter.PlayerEnum.Player1;
         float dist0 = (DataCenter.instance.players[0].transform.position - transform.position).magnitude;
@@ -95,7 +109,19 @@ public class BossControl : MonoBehaviour
                     if(targetPlayer == DataCenter.instance.GetWitchMove())
                     {
                         target.GetComponent<Health>()?.HealthChange(-2);
+
+                        //play audio
+                        if (!startSound) {
+                         
+                            m_AudioSouce.Play();
+                            startSound = true;
+                        }
+                       
+
                     }
+
+
+
                 }
             }
             else
